@@ -6,7 +6,29 @@
     android:layout_height="match_parent"
     android:background="#6094B5F5"
     tools:context=".MainActivity">
+    <TextView
+        android:id="@+id/Photeo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ChopinScript"
+        android:text="Photeo"
+        android:textColor="#E38E0E"
+        android:textColorLink="E38E0E"
+        android:textSize="96dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="277dp"
+        android:layout_height="247dp"
+        app:layout_constraintBottom_toTopOf="@id/Appareil"
+        app:layout_constraintHorizontal_bias="0.582"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Photeo"
+        app:srcCompat="@mipmap/logo_finale_fondtransparent" />
     <Button
         android:id="@+id/Galerie"
         android:layout_width="275dp"
@@ -54,28 +76,8 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="277dp"
-        android:layout_height="247dp"
-        app:layout_constraintBottom_toTopOf="@id/Appareil"
-        app:layout_constraintHorizontal_bias="0.582"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Photeo"
-        app:srcCompat="@mipmap/logo_finale_fondtransparent" />
 
-    <TextView
-        android:id="@+id/Photeo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/ChopinScript"
-        android:text="Photeo"
-        android:textColor="#E38E0E"
-        android:textColorLink="E38E0E"
-        android:textSize="96"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
