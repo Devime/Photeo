@@ -6,13 +6,50 @@
     android:layout_height="match_parent"
     android:background="#6094B5F5"
     tools:context=".MainActivity">
+    <TextView
+        android:id="@+id/Photeo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/chopinscript"
+        android:text="Photéo"
+        android:textColor="#E38E0E"
+        android:textSize="96dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="275dp"
+        android:layout_height="188dp"
+        android:layout_marginTop="88dp"
+        app:layout_constraintBottom_toTopOf="@id/Appareil"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/Photeo"
+        app:layout_constraintVertical_bias="0.450"
+        app:srcCompat="@mipmap/logo_finale_fondtransparent"
+        />
 
     <Button
-        android:id="@+id/Galerie"
-        android:layout_width="275dp"
-        android:layout_height="113dp"
+        android:id="@+id/Appareil"
+        android:layout_width="255dp"
+        android:layout_height="106dp"
         android:background="@drawable/pel1"
-        android:fontFamily="@font/ChopinScript"
+        android:fontFamily="@font/chopinscript"
+        android:text="Appareil"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#0051ED"
+        android:textSize="36sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
+    <Button
+        android:id="@+id/Galerie"
+        android:layout_width="255dp"
+        android:layout_height="106dp"
+        android:background="@drawable/pel1"
+        android:fontFamily="@font/chopinscript"
         android:text="Galerie"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="#0051ED"
@@ -21,14 +58,14 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@id/Appareil"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Appareil"  />
+        app:layout_constraintTop_toBottomOf="@+id/Appareil" />
 
     <Button
         android:id="@+id/Exit"
-        android:layout_width="275dp"
-        android:layout_height="113dp"
+        android:layout_width="255dp"
+        android:layout_height="106dp"
         android:background="@drawable/pel1"
-        android:fontFamily="@font/ChopinScript"
+        android:fontFamily="@font/chopinscript"
         android:text="Quitter"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="#0051ED"
@@ -37,45 +74,14 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@id/Galerie"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Galerie" />
+        app:layout_constraintTop_toBottomOf="@+id/Galerie"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
-    <Button
-        android:id="@+id/Appareil"
-        android:layout_width="275dp"
-        android:layout_height="113dp"
-        android:background="@drawable/pel1"
-        android:fontFamily="@font/ChopinScript"
-        android:text="Appareil"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="#0051ED"
-        android:textSize="36sp"
 
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintRight_toRightOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="277dp"
-        android:layout_height="247dp"
-        app:layout_constraintBottom_toTopOf="@id/Appareil"
-        app:layout_constraintHorizontal_bias="0.582"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Photeo"
-        app:srcCompat="@mipmap/logo_finale_fondtransparent" />
 
-    <TextView
-        android:id="@+id/Photeo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/ChopinScript"
-        android:text="Photeo"
-        android:textColor="#E38E0E"
-        android:textColorLink="E38E0E"
-        android:textSize="96"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
