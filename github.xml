@@ -1,0 +1,10 @@
+<application>
+  <component name="GithubAccounts">
+    <account id="7b1d2f75-9434-4d8a-92de-d3abd912bff6" name="devime">
+      <server host="github.com" />
+    </account>
+  </component>
+  <component name="GithubSettings">
+    <option name="COPY_URL_GIST" value="true" />
+  </component>
+</application>
