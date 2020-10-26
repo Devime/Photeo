@@ -19,16 +19,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/logo"
         android:layout_width="275dp"
         android:layout_height="188dp"
+        android:layout_marginTop="88dp"
         app:layout_constraintBottom_toTopOf="@id/Appareil"
-        app:layout_constraintHorizontal_bias="0.582"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Photeo"
+        app:layout_constraintTop_toTopOf="@id/Photeo"
+        app:layout_constraintVertical_bias="0.450"
+        app:srcCompat="@mipmap/logo_finale_fondtransparent"
+        />
 
-        app:srcCompat="@mipmap/logo_finale_fondtransparent" />
     <Button
         android:id="@+id/Appareil"
         android:layout_width="255dp"
@@ -39,10 +41,9 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="#0051ED"
         android:textSize="36sp"
-
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
     <Button
         android:id="@+id/Galerie"
         android:layout_width="255dp"

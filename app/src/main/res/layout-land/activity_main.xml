@@ -16,6 +16,7 @@
         android:fontFamily="@font/chopinscript"
         android:textColor="#E38E0E"
         android:textSize="96dp"
+        android:layout_marginLeft="50dp"
         app:layout_constraintHorizontal_bias="0.417"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -27,13 +28,15 @@
         android:layout_height="82dp"
         android:background="@drawable/pel1"
         android:fontFamily="@font/chopinscript"
-        android:text="Arrapreil"
+        android:text="Appareil"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="#0051ED"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="36sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo" />
+        app:layout_constraintTop_toBottomOf="@+id/logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.200"/>
 
     <Button
         android:id="@+id/Galerie"
@@ -42,6 +45,9 @@
         android:background="@drawable/pel1"
         android:fontFamily="@font/chopinscript"
         android:text="Galerie"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#0051ED"
+        android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/Appareil"
         app:layout_constraintRight_toLeftOf="@id/Exit"
@@ -55,6 +61,9 @@
         android:background="@drawable/pel1"
         android:fontFamily="@font/chopinscript"
         android:text="Quitter"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#0051ED"
+        android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toRightOf="@id/Galerie"
@@ -67,11 +76,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@mipmap/logo_finale_fondtransparent"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="95dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.409"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Photeo"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.450" />
 </androidx.constraintlayout.widget.ConstraintLayout>
