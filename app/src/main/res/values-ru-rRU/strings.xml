@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Photéo</string>
+    <string name="credis"> Кредиты </string>
+    <string name="developpeur"> Разработчик </string>
+    <string name="copyright"> Авторское право </string>
+    <string name="Appareil"> Камера </string>
+    <string name="Galerie"> Галерея </string>
+    <string name="Quitter"> Выход </string>
+
+</resources>

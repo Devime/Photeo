@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Photéo</string>
+    <string name="credis">Credits</string>
+    <string name="developpeur">Developpeur</string>
+    <string name="copyright">Copyright</string>
+    <string name="Appareil">Camera</string>
+    <string name="Galerie">Gallery</string>
+    <string name="Quitter">Exit</string>
+</resources>

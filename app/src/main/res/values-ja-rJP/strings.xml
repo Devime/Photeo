@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Photéo</string>
+    <string name="credis">クレジット</string>
+    <string name="developpeur">開発者</string>
+    <string name="copyright">著作権</string>
+    <string name="Appareil">カメラ</string>
+    <string name="Galerie">ギャラリー</string>
+    <string name="Quitter">出口</string>
+</resources>
