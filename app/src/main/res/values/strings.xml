@@ -12,4 +12,6 @@
     <string name="Appareil">Appareil</string>
     <string name="Galerie">Galerie</string>
     <string name="Quitter">Quitter</string>
+    <string name="app_foldername">tempfile</string>
+    <string name="pictures_folder">gallerie</string>
 </resources>
