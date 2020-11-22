@@ -74,6 +74,7 @@ public class Apnperformer extends AppCompatActivity {
     private boolean mFlashSupported;
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
+    private int test = 10;
 
     CameraDevice.StateCallback stateCallback = new CameraDevice.StateCallback() {
         @Override
