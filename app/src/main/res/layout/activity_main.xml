@@ -14,7 +14,6 @@
         android:fontFamily="@font/chopinscript"
         android:text="Photéo"
         android:textColor="#E38E0E"
-        android:type="linear"
         android:textSize="96dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
