@@ -7,11 +7,12 @@
 
     <Button
         android:id="@+id/btakepic"
-        android:layout_width="70dp"
-        android:layout_height="45dp"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="165dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/cam"
         />
 
     <TextureView
@@ -19,6 +20,145 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+        tools:layout_editor_absoluteY="-117dp"
+        />
 
+    <ImageView
+        android:id="@+id/angle"
+        android:layout_width="83dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="@drawable/angle"
+        />
+
+    <TextView
+        android:id="@+id/Y"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Y"
+        app:layout_constraintBottom_toTopOf="@id/angle"
+        app:layout_constraintLeft_toLeftOf="@id/angle"
+        app:layout_constraintRight_toRightOf="@id/angle"
+        />
+    <TextView
+        android:id="@+id/Z"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Z"
+        android:layout_marginRight="21dp"
+        app:layout_constraintBottom_toBottomOf="@id/angle"
+        app:layout_constraintLeft_toLeftOf="@id/angle"
+        app:layout_constraintRight_toRightOf="@id/angle"
+        />
+
+
+    <TextView
+        android:id="@+id/X"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:layout_marginLeft="100dp"
+        app:layout_constraintTop_toTopOf="@id/angle"
+        app:layout_constraintBottom_toBottomOf="@id/angle"
+        app:layout_constraintLeft_toLeftOf="@id/angle"
+        app:layout_constraintRight_toRightOf="@id/angle"
+        />
+    <TextView
+        android:id="@+id/Xt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="XText"
+        android:textColor="#4FCE3D"
+        app:layout_constraintTop_toBottomOf="@id/X"
+        app:layout_constraintLeft_toLeftOf="@id/X"
+        />
+
+    <TextView
+        android:id="@+id/Yt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="YText"
+        android:textColor="#0089F7"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintTop_toTopOf="@id/Y"
+        app:layout_constraintLeft_toRightOf="@id/Y"
+        />
+    <TextView
+        android:id="@+id/Zt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ZText"
+        android:textColor="#DD68CE"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintTop_toTopOf="@id/Z"
+        app:layout_constraintLeft_toRightOf="@id/Z"
+        />
+
+
+
+
+    <TextView
+        android:id="@+id/longitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="longitude :"
+        android:layout_marginBottom="50dp"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/btakepic"
+        app:layout_constraintBottom_toTopOf="@id/btakepic"
+        app:layout_constraintLeft_toRightOf="@id/btakepic"
+
+        />
+
+    <TextView
+        android:id="@+id/latitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="latitude :"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/longitude"
+        app:layout_constraintLeft_toLeftOf="@id/longitude"
+        />
+    <TextView
+        android:id="@+id/altitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="altitude :"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/latitude"
+        app:layout_constraintLeft_toLeftOf="@id/latitude"
+
+        />
+    <!-- Text view TEXTE longitude,TEXTE latitude,TEXTE altitude-->
+    <TextView
+        android:id="@+id/latitudet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="latitudeText"
+        android:textColor="#00FF00"
+        android:layout_marginLeft="5dp"
+        app:layout_constraintTop_toTopOf="@id/latitude"
+        app:layout_constraintLeft_toRightOf="@id/latitude"
+        />
+
+    <TextView
+        android:id="@+id/longitudet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="longitudeText"
+        android:textColor="#0000FF"
+        android:layout_marginLeft="5dp"
+        app:layout_constraintTop_toTopOf="@id/longitude"
+        app:layout_constraintLeft_toRightOf="@id/longitude"
+        />
+    <TextView
+        android:id="@+id/altitudet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="altitudeText"
+        android:textColor="#DD2B75"
+        android:layout_marginLeft="5dp"
+        app:layout_constraintTop_toTopOf="@id/altitude"
+        app:layout_constraintLeft_toRightOf="@id/altitude"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
