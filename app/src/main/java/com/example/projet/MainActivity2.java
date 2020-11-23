@@ -8,23 +8,23 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity2 extends AppCompatActivity {
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
 
 
 
         View.OnClickListener ltoapn = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, Apnperformer.class);
+                Intent intent = new Intent(MainActivity2.this, Apnperformer.class);
                 startActivity(intent);
-                ActivityCompat.finishAffinity(MainActivity.this);
+                ActivityCompat.finishAffinity(MainActivity2.this);
             }
         };
 
