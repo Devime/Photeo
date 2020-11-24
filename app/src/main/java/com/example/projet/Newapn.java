@@ -20,6 +20,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.Surface;
@@ -38,8 +39,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -94,13 +97,13 @@ public class Newapn extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.apn);
+        setContentView(R.layout.apnview);
 
-        textureView = (TextureView)findViewById(R.id.textureView);
+        textureView = (TextureView)findViewById(R.id.apnarea);
         //From Java 1.4 , you can use keyword 'assert' to check expression true or false
         assert textureView != null;
         textureView.setSurfaceTextureListener(textureListener);
-        btnCapture = (Button)findViewById(R.id.btnCapture);
+        btnCapture = (Button)findViewById(R.id.btakepic);
         btnCapture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,104 +113,89 @@ public class Newapn extends AppCompatActivity {
     }
 
     private void takePicture() {
-        if(cameraDevice == null)
+        if(null == cameraDevice) {
+
             return;
-        CameraManager manager = (CameraManager)getSystemService(Context.CAMERA_SERVICE);
-        try{
+        }
+        CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        try {
             CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraDevice.getId());
             Size[] jpegSizes = null;
-            if(characteristics != null)
-                jpegSizes = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
-                        .getOutputSizes(ImageFormat.JPEG);
-
-            //Capture image with custom size
+            if (characteristics != null) {
+                jpegSizes = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP).getOutputSizes(ImageFormat.JPEG);
+            }
             int width = 640;
             int height = 480;
-            if(jpegSizes != null && jpegSizes.length > 0)
-            {
+            if (jpegSizes != null && 0 < jpegSizes.length) {
                 width = jpegSizes[0].getWidth();
                 height = jpegSizes[0].getHeight();
             }
-            final ImageReader reader = ImageReader.newInstance(width,height,ImageFormat.JPEG,1);
-            List<Surface> outputSurface = new ArrayList<>(2);
-            outputSurface.add(reader.getSurface());
-            outputSurface.add(new Surface(textureView.getSurfaceTexture()));
-
+            ImageReader reader = ImageReader.newInstance(width, height, ImageFormat.JPEG, 1);
+            List<Surface> outputSurfaces = new ArrayList<Surface>(2);
+            outputSurfaces.add(reader.getSurface());
+            outputSurfaces.add(new Surface(textureView.getSurfaceTexture()));
             final CaptureRequest.Builder captureBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             captureBuilder.addTarget(reader.getSurface());
             captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
-
-            //Check orientation base on device
+            // Orientation
             int rotation = getWindowManager().getDefaultDisplay().getRotation();
-            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION,ORIENTATIONS.get(rotation));
-
-            file = new File(Environment.getExternalStorageDirectory()+"/"+UUID.randomUUID().toString()+".jpg");
+            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
+            String ts = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            final File file = new File(Environment.getExternalStorageDirectory()+"/"+ts+".jpg");
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
-                public void onImageAvailable(ImageReader imageReader) {
+                public void onImageAvailable(ImageReader reader) {
                     Image image = null;
-                    try{
+                    try {
                         image = reader.acquireLatestImage();
                         ByteBuffer buffer = image.getPlanes()[0].getBuffer();
                         byte[] bytes = new byte[buffer.capacity()];
                         buffer.get(bytes);
                         save(bytes);
-
-                    }
-                    catch (FileNotFoundException e)
-                    {
+                    } catch (FileNotFoundException e) {
                         e.printStackTrace();
-                    }
-                    catch (IOException e)
-                    {
+                    } catch (IOException e) {
                         e.printStackTrace();
-                    }
-                    finally {
-                        {
-                            if(image != null)
-                                image.close();
+                    } finally {
+                        if (image != null) {
+                            image.close();
                         }
                     }
                 }
                 private void save(byte[] bytes) throws IOException {
-                    OutputStream outputStream = null;
-                    try{
-                        outputStream = new FileOutputStream(file);
-                        outputStream.write(bytes);
-                    }finally {
-                        if(outputStream != null)
-                            outputStream.close();
+                    OutputStream output = null;
+                    try {
+                        output = new FileOutputStream(file);
+                        output.write(bytes);
+                    } finally {
+                        if (null != output) {
+                            output.close();
+                        }
                     }
                 }
             };
-
-            reader.setOnImageAvailableListener(readerListener,mBackgroundHandler);
+            reader.setOnImageAvailableListener(readerListener, mBackgroundHandler);
             final CameraCaptureSession.CaptureCallback captureListener = new CameraCaptureSession.CaptureCallback() {
                 @Override
-                public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
+                public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
-                    Toast.makeText(Newapn.this, "Saved "+file, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Newapn.this, "Saved:" + file, Toast.LENGTH_SHORT).show();
                     createCameraPreview();
                 }
             };
-
-            cameraDevice.createCaptureSession(outputSurface, new CameraCaptureSession.StateCallback() {
+            cameraDevice.createCaptureSession(outputSurfaces, new CameraCaptureSession.StateCallback() {
                 @Override
-                public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
-                    try{
-                        cameraCaptureSession.capture(captureBuilder.build(),captureListener,mBackgroundHandler);
+                public void onConfigured(CameraCaptureSession session) {
+                    try {
+                        session.capture(captureBuilder.build(), captureListener, mBackgroundHandler);
                     } catch (CameraAccessException e) {
                         e.printStackTrace();
                     }
                 }
-
                 @Override
-                public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
-
+                public void onConfigureFailed(CameraCaptureSession session) {
                 }
-            },mBackgroundHandler);
-
-
+            }, mBackgroundHandler);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }

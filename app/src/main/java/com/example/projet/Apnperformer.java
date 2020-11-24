@@ -9,6 +9,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
@@ -27,6 +28,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.provider.MediaStore;
 import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.Surface;
@@ -76,6 +78,7 @@ public class Apnperformer extends AppCompatActivity {
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
     private int test = 10;
+    private Bitmap imageBitmap;
 
     ///////////////////////////////////////////////////////////////////////////////
     // Storage Permissions
@@ -155,10 +158,23 @@ public class Apnperformer extends AppCompatActivity {
         });
     }
 
+    public void OnClickbtnEnreg(View view) {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "Image_" + timeStamp;
+        try{
+
+            MediaStore.Images.Media.insertImage(getContentResolver(),imageBitmap,imageFileName,"description");
+        }
+        catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
+        }
+    }
+
     private void takePicture() throws CameraAccessException {
         if (cameraDevice==null){
             return;
         }
+
         System.out.println("++++++++++++++++++bb++++++++++++++++++++++++++++");
         CameraManager manager = (CameraManager)getSystemService(Context.CAMERA_SERVICE);
         CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraDevice.getId());
@@ -169,7 +185,6 @@ public class Apnperformer extends AppCompatActivity {
         if(jpegSizes != null && jpegSizes.length > 0){
             width = jpegSizes[0].getWidth();
             height = jpegSizes[0].getHeight();
-            System.out.println("------------notnull**-85995+3++25+7+2872+4++4487799899899");
         }
         final ImageReader reader = ImageReader.newInstance(width,height,ImageFormat.JPEG,1);
         List<Surface> outputSurfaces = new ArrayList<>(2);
@@ -183,7 +198,10 @@ public class Apnperformer extends AppCompatActivity {
         captureBuilder.set(CaptureRequest.JPEG_ORIENTATION,ORIENTATIONS.get(rotation));
 
         String ts = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)+"/"+ts+".jpg");
+        System.out.println("----------------------------------------------------------------------->"+ts);
+        File mFolder = new File(getFilesDir() + "/sample");
+        file = new File(mFolder.getPath()+"/"+ts+".jpg");
+        System.out.println("----------------------------------------------------------------------->"+file.exists());
         ImageReader.OnImageAvailableListener readerlistener = new ImageReader.OnImageAvailableListener() {
             @Override
             public void onImageAvailable(ImageReader imageReader) {
@@ -231,9 +249,10 @@ public class Apnperformer extends AppCompatActivity {
     private void save(byte[] bytes) throws IOException {
         System.out.println("-------------------------------------saving"+"-------------"+ActivityCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE) );
         OutputStream outputStream = null;
-        outputStream = new FileOutputStream(file);
-        outputStream.write(bytes);
-        outputStream.close();
+        FileOutputStream fos = new FileOutputStream(new File( file.getName()));
+//        outputStream = new FileOutputStream(file);
+//        outputStream.write(bytes);
+//        outputStream.close();
     }
 
     private void createCameraPreview() {
