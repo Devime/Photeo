@@ -23,10 +23,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -46,10 +50,31 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class Newapn extends AppCompatActivity {
+public class Newapn extends AppCompatActivity implements GestureDetector.OnGestureListener,GestureDetector.OnDoubleTapListener {
 
     private Button btnCapture;
     private TextureView textureView;
+
+    //gesture
+    private static final int SWIPE_MIN_DISTANCE = 100;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 90;
+    //gesture grp view
+    private float x1,x2,y1,y2;
+    private ImageView grp1img;
+    private TextView grp1txfix1;
+    private TextView grp1txfix2;
+    private TextView grp1txfix3;
+    private TextView grp1tx1;
+    private TextView grp1tx2;
+    private TextView grp1tx3;
+    private TextView grp2txfix1;
+    private TextView grp2txfix2;
+    private TextView grp2txfix3;
+    private TextView grp2tx1;
+    private TextView grp2tx2;
+    private TextView grp2tx3;
+    private int state =0;
+    private GestureDetector gestureDetector;
 
     //Check state orientation of output image
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
@@ -66,6 +91,7 @@ public class Newapn extends AppCompatActivity {
     private CaptureRequest.Builder captureRequestBuilder;
     private Size imageDimension;
     private ImageReader imageReader;
+
 
     //Save to FILE
     private File file;
@@ -99,8 +125,24 @@ public class Newapn extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.apnview);
 
+        grp1img = findViewById(R.id.angle);
+        grp1txfix1 = findViewById(R.id.X);
+        grp1txfix2 = findViewById(R.id.Y);
+        grp1txfix3 = findViewById(R.id.Z);
+        grp1tx1 = findViewById(R.id.Xt);
+        grp1tx2 = findViewById(R.id.Yt);
+        grp1tx3 = findViewById(R.id.Zt);
+
+        grp2txfix1 = findViewById(R.id.latitude);
+        grp2txfix2 = findViewById(R.id.longitude);
+        grp2txfix3 = findViewById(R.id.altitude);
+        grp2tx1 = findViewById(R.id.latitudet);
+        grp2tx2 = findViewById(R.id.longitudet);
+        grp2tx3 = findViewById(R.id.altitudet);
+        this.gestureDetector = new GestureDetector(this,this);
+
         textureView = (TextureView)findViewById(R.id.apnarea);
-        //From Java 1.4 , you can use keyword 'assert' to check expression true or false
+
         assert textureView != null;
         textureView.setSurfaceTextureListener(textureListener);
         btnCapture = (Button)findViewById(R.id.btakepic);
@@ -329,5 +371,214 @@ public class Newapn extends AppCompatActivity {
         mBackgroundThread = new HandlerThread("Camera Background");
         mBackgroundThread.start();
         mBackgroundHandler = new Handler(mBackgroundThread.getLooper());
+    }
+
+    @Override
+    public boolean onSingleTapConfirmed(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public boolean onDoubleTap(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public boolean onDoubleTapEvent(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public boolean onDown(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent event1, MotionEvent event2, float velocityX, float velocityY) {
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<>>>>>>>>>");
+        if (event1.getX() - event2.getX() > SWIPE_MIN_DISTANCE &&
+                Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY){
+            // Left swipe...
+            System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+            switch (state) {
+                case 0:
+                    //nothing
+                    break;
+                case 1:
+                    swipeperformer(0);
+                    state=0;
+                    break;
+                case 2:
+                    swipeperformer(1);
+                    state=1;
+                    break;
+                case 3:
+                    swipeperformer(2);
+                    state=2;
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if ((event2.getX() - event1.getX() > SWIPE_MIN_DISTANCE &&
+                Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)){
+            // Right swipe...
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            switch (state) {
+                case 0:
+                    swipeperformer(1);
+                    state=1;
+                    break;
+                case 1:
+                    swipeperformer(2);
+                    state=2;
+                    break;
+                case 2:
+                    swipeperformer(3);
+                    state=3;
+                    break;
+                case 3:
+                    //nothing
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if ((event1.getY() - event2.getY() > SWIPE_MIN_DISTANCE &&
+                Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY)){
+            // Swipe up...
+        }
+        else if ((event2.getY() - event1.getY() > SWIPE_MIN_DISTANCE &&
+                Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY)) {
+            // Swipe down...
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        gestureDetector.onTouchEvent(event);
+        /*switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                x1 = event.getX();
+                y1 = event.getY();
+            case MotionEvent.ACTION_UP:
+                x2 = event.getX();
+                y2 = event.getY();
+
+                float X = x2-x1;
+                float Y = y2-y1;
+
+                if (Math.abs(X)>SWIPE_MIN_DISTANCE){
+                    if(x2>x1){
+                        Toast.makeText(this,"right",Toast.LENGTH_LONG).show();
+                        System.out.println("-----------a-----------------------------------------------------a------------------------------------");
+
+                    }
+                    else{
+                        Toast.makeText(this,"Left",Toast.LENGTH_LONG).show();
+                        System.out.println("-----------a-----------------------------------------------------b------------------------------------");
+                    }
+                }
+        }*/
+
+        return super.onTouchEvent(event);
+    }
+
+    public void swipeperformer(int etat){
+        switch (etat) {
+            case 0:
+                // all
+                grp1img.setVisibility(View.VISIBLE);
+                grp1txfix1.setVisibility(View.VISIBLE);
+                grp1txfix2.setVisibility(View.VISIBLE);
+                grp1txfix3.setVisibility(View.VISIBLE);
+                grp1tx1.setVisibility(View.VISIBLE);
+                grp1tx2.setVisibility(View.VISIBLE);
+                grp1tx3.setVisibility(View.VISIBLE);
+
+                grp2txfix1.setVisibility(View.VISIBLE);
+                grp2txfix2.setVisibility(View.VISIBLE);
+                grp2txfix3.setVisibility(View.VISIBLE);
+                grp2tx1.setVisibility(View.VISIBLE);
+                grp2tx2.setVisibility(View.VISIBLE);
+                grp2tx3.setVisibility(View.VISIBLE);
+                break;
+            case 1:
+                //angle only
+                grp1img.setVisibility(View.VISIBLE);
+                grp1txfix1.setVisibility(View.VISIBLE);
+                grp1txfix2.setVisibility(View.VISIBLE);
+                grp1txfix3.setVisibility(View.VISIBLE);
+                grp1tx1.setVisibility(View.VISIBLE);
+                grp1tx2.setVisibility(View.VISIBLE);
+                grp1tx3.setVisibility(View.VISIBLE);
+
+                grp2txfix1.setVisibility(View.INVISIBLE);
+                grp2txfix2.setVisibility(View.INVISIBLE);
+                grp2txfix3.setVisibility(View.INVISIBLE);
+                grp2tx1.setVisibility(View.INVISIBLE);
+                grp2tx2.setVisibility(View.INVISIBLE);
+                grp2tx3.setVisibility(View.INVISIBLE);
+                break;
+            case 2:
+                //only pos
+                grp1img.setVisibility(View.INVISIBLE);
+                grp1txfix1.setVisibility(View.INVISIBLE);
+                grp1txfix2.setVisibility(View.INVISIBLE);
+                grp1txfix3.setVisibility(View.INVISIBLE);
+                grp1tx1.setVisibility(View.INVISIBLE);
+                grp1tx2.setVisibility(View.INVISIBLE);
+                grp1tx3.setVisibility(View.INVISIBLE);
+
+                grp2txfix1.setVisibility(View.VISIBLE);
+                grp2txfix2.setVisibility(View.VISIBLE);
+                grp2txfix3.setVisibility(View.VISIBLE);
+                grp2tx1.setVisibility(View.VISIBLE);
+                grp2tx2.setVisibility(View.VISIBLE);
+                grp2tx3.setVisibility(View.VISIBLE);
+
+                break;
+            case 3:
+                //rien
+                grp1img.setVisibility(View.INVISIBLE);
+                grp1txfix1.setVisibility(View.INVISIBLE);
+                grp1txfix2.setVisibility(View.INVISIBLE);
+                grp1txfix3.setVisibility(View.INVISIBLE);
+                grp1tx1.setVisibility(View.INVISIBLE);
+                grp1tx2.setVisibility(View.INVISIBLE);
+                grp1tx3.setVisibility(View.INVISIBLE);
+
+                grp2txfix1.setVisibility(View.INVISIBLE);
+                grp2txfix2.setVisibility(View.INVISIBLE);
+                grp2txfix3.setVisibility(View.INVISIBLE);
+                grp2tx1.setVisibility(View.INVISIBLE);
+                grp2tx2.setVisibility(View.INVISIBLE);
+                grp2tx3.setVisibility(View.INVISIBLE);
+                break;
+            default:
+                break;
+        }
     }
 }
