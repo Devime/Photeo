@@ -75,9 +75,11 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
     private Button btnCapture;
     private TextureView textureView;
 
+    private Boolean flag=true;
+
     //gesture
     private static final int SWIPE_MIN_DISTANCE = 100;
-    private static final int SWIPE_THRESHOLD_VELOCITY = 90;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 150;
     //gesture grp view
     private float x1, x2, y1, y2;
     private ImageView grp1img;
@@ -156,8 +158,8 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         song=MediaPlayer.create(this, R.raw.song);
 
-
-
+        Intent intent = getIntent();
+        flag = intent.getBooleanExtra("flag",true);
 
         grp1img = findViewById(R.id.angle);
         grp1txfix1 = findViewById(R.id.X);
@@ -201,6 +203,8 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
         Intent intent = new Intent(Newapn.this, MainActivity2.class);
         startActivity(intent);
         ActivityCompat.finishAffinity(Newapn.this);
+        mBackgroundThread.quit();
+
     }
 
     private void gogeo() {
@@ -458,7 +462,13 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
     private void openCamera() {
         CameraManager manager = (CameraManager)getSystemService(Context.CAMERA_SERVICE);
         try{
-            cameraId = manager.getCameraIdList()[0];
+            if(flag){
+                cameraId = manager.getCameraIdList()[0];
+            }else{
+                cameraId = manager.getCameraIdList()[1];
+            }
+
+            System.out.println(manager.getCameraIdList().length+"<---------------------------------------------------------------------------------------------");
             CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
             StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
             assert map != null;
@@ -492,6 +502,7 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
 
         @Override
         public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
+
             return false;
         }
 
@@ -517,6 +528,7 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
     protected void onResume() {
         super.onResume();
         startBackgroundThread();
+
         if(textureView.isAvailable())
             openCamera();
         else
@@ -524,10 +536,16 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
         sensorManager.registerListener(gyroeventListener,gyrosensor,SensorManager.SENSOR_DELAY_FASTEST);
     }
 
+
+
     @Override
     protected void onPause() {
         stopBackgroundThread();
         sensorManager.unregisterListener(gyroeventListener);
+        Thread.currentThread().interrupt();
+        if (cameraDevice!=null){
+            cameraDevice.close();
+        }
         super.onPause();
     }
 
@@ -642,12 +660,28 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
         else if ((event1.getY() - event2.getY() > SWIPE_MIN_DISTANCE &&
                 Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY)){
             // Swipe up...
+            reversecam();
+            System.out.println("up--------------------------->");
+            Intent intent = new Intent(Newapn.this, Newapn.class);
+            intent.putExtra("flag",flag);
+            startActivity(intent);
+            ActivityCompat.finishAffinity(Newapn.this);
+
         }
         else if ((event2.getY() - event1.getY() > SWIPE_MIN_DISTANCE &&
                 Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY)) {
             // Swipe down...
+            reversecam();
+            Intent intent = new Intent(Newapn.this, Newapn.class);
+            intent.putExtra("flag",flag);
+            startActivity(intent);
+            ActivityCompat.finishAffinity(Newapn.this);
         }
         return false;
+    }
+
+    private void reversecam() {
+        flag=!flag;
     }
 
     @Override
