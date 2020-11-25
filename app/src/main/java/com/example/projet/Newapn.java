@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ImageFormat;
+import android.graphics.Paint;
 import android.graphics.SurfaceTexture;
 import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Sensor;
@@ -48,10 +51,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
@@ -168,6 +174,7 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
         gogyro();
         gogeo();
 
+
         textureView = (TextureView) findViewById(R.id.apnarea);
 
         assert textureView != null;
@@ -194,7 +201,6 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
         }
         Location location = locationManager.getLastKnownLocation(provider);
         if (location != null) {
-            System.out.println("-------------------------------------------<----------------------------------<-------------------->"+location.getAltitude());
             String latitude =""+location.getLatitude();
             String longitude =""+location.getLongitude();
             String altitude =""+location.getAltitude();
@@ -272,7 +278,8 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
                         ByteBuffer buffer = image.getPlanes()[0].getBuffer();
                         byte[] bytes = new byte[buffer.capacity()];
                         buffer.get(bytes);
-                        save(bytes);
+
+                        save(bytes,image);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -283,8 +290,9 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
                         }
                     }
                 }
-                private void save(byte[] bytes) throws IOException {
+                private void save(byte[] bytes,Image image) throws IOException {
                     OutputStream output = null;
+                    bytes = ajout(bytes,image.getHeight(),image.getWidth());
                     try {
                         output = new FileOutputStream(file);
                         output.write(bytes);
@@ -320,6 +328,32 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    private byte[] ajout(byte[] bytes,int h,int l) {
+        InputStream is = new ByteArrayInputStream(bytes);
+        Bitmap bitmap = BitmapFactory.decodeStream(is);
+        Bitmap drawableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888,true);
+        Canvas canvas = new Canvas(drawableBitmap);
+        Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(100);
+        double x = h*.05;
+        double y = l*0.90;
+        String txt = "rot"+grp1txfix1.getText()+":"+grp1tx1.getText();
+        String txt2 ="rot"+grp1txfix2.getText()+":"+grp1tx2.getText();
+        String txt3 ="rot"+grp1txfix3.getText()+":"+grp1tx3.getText();
+        System.out.println(txt);
+        canvas.drawText(txt,(int)x,(int)y,paint);
+        y=l*0.94;
+        canvas.drawText(txt2,(int)x,(int)y,paint);
+        y=l*0.98;
+        canvas.drawText(txt3,(int)x,(int)y,paint);
+
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        drawableBitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+        return outputStream.toByteArray();
     }
 
     private void createCameraPreview() {
