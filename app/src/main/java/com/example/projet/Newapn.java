@@ -2,9 +2,17 @@ package com.example.projet;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
+import android.graphics.drawable.BitmapDrawable;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
@@ -76,6 +84,11 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
     private int state =0;
     private GestureDetector gestureDetector;
 
+    //gyro
+    private SensorManager sensorManager;
+    private Sensor gyrosensor;
+    private SensorEventListener gyroeventListener;
+
     //Check state orientation of output image
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     static{
@@ -91,6 +104,7 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
     private CaptureRequest.Builder captureRequestBuilder;
     private Size imageDimension;
     private ImageReader imageReader;
+
 
 
     //Save to FILE
@@ -124,6 +138,10 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.apnview);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+
+        gogyro();
 
         grp1img = findViewById(R.id.angle);
         grp1txfix1 = findViewById(R.id.X);
@@ -152,6 +170,31 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
                 takePicture();
             }
         });
+    }
+
+    private void gogyro() {
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        gyrosensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+
+        if(gyrosensor == null){
+            Toast.makeText(this,"gyro indisponible",Toast.LENGTH_LONG);
+        }
+        gyroeventListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent sensorEvent) {
+                int rotx= (int) (((float) sensorEvent.values[1])*100);
+                int roty=(int) (((float) sensorEvent.values[0])*100);
+                int rotz=(int) (((float) sensorEvent.values[2])*100);
+                grp1tx1.setText(String.valueOf(rotx));
+                grp1tx2.setText(String.valueOf(roty));
+                grp1tx3.setText(String.valueOf(rotz));
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int i) {
+
+            }
+        };
     }
 
     private void takePicture() {
@@ -348,11 +391,13 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
             openCamera();
         else
             textureView.setSurfaceTextureListener(textureListener);
+        sensorManager.registerListener(gyroeventListener,gyrosensor,SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     @Override
     protected void onPause() {
         stopBackgroundThread();
+        sensorManager.unregisterListener(gyroeventListener);
         super.onPause();
     }
 
@@ -415,7 +460,7 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
 
     @Override
     public boolean onFling(MotionEvent event1, MotionEvent event2, float velocityX, float velocityY) {
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<>>>>>>>>>");
+
         if (event1.getX() - event2.getX() > SWIPE_MIN_DISTANCE &&
                 Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY){
             // Left swipe...
@@ -479,29 +524,6 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
     public boolean onTouchEvent(MotionEvent event) {
 
         gestureDetector.onTouchEvent(event);
-        /*switch (event.getAction()){
-            case MotionEvent.ACTION_DOWN:
-                x1 = event.getX();
-                y1 = event.getY();
-            case MotionEvent.ACTION_UP:
-                x2 = event.getX();
-                y2 = event.getY();
-
-                float X = x2-x1;
-                float Y = y2-y1;
-
-                if (Math.abs(X)>SWIPE_MIN_DISTANCE){
-                    if(x2>x1){
-                        Toast.makeText(this,"right",Toast.LENGTH_LONG).show();
-                        System.out.println("-----------a-----------------------------------------------------a------------------------------------");
-
-                    }
-                    else{
-                        Toast.makeText(this,"Left",Toast.LENGTH_LONG).show();
-                        System.out.println("-----------a-----------------------------------------------------b------------------------------------");
-                    }
-                }
-        }*/
 
         return super.onTouchEvent(event);
     }
@@ -581,4 +603,6 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
                 break;
         }
     }
+
+
 }

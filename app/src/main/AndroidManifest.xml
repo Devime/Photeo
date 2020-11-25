@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
-        android:requestLegacyExternalStorage="true">
+        android:requestLegacyExternalStorage="true"
+        android:screenOrientation="portrait">
         <activity android:name=".Newapn" />
         <activity android:name=".Apnperformer" />
         <activity android:name=".MainActivity2">
