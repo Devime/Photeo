@@ -340,17 +340,62 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
         paint.setTextSize(100);
         double x = h*.05;
         double y = l*0.90;
-        String txt = "rot"+grp1txfix1.getText()+":"+grp1tx1.getText();
-        String txt2 ="rot"+grp1txfix2.getText()+":"+grp1tx2.getText();
-        String txt3 ="rot"+grp1txfix3.getText()+":"+grp1tx3.getText();
-        System.out.println(txt);
-        canvas.drawText(txt,(int)x,(int)y,paint);
-        y=l*0.94;
-        canvas.drawText(txt2,(int)x,(int)y,paint);
-        y=l*0.98;
-        canvas.drawText(txt3,(int)x,(int)y,paint);
-
-
+        String txt,txt2,txt3;
+        switch (state){
+            case 0:
+                //x,y et z (gyroscope)
+                txt= "rot"+grp1txfix1.getText()+":"+grp1tx1.getText();//X
+                txt2 ="rot"+grp1txfix2.getText()+":"+grp1tx2.getText();//Y
+                txt3 ="rot"+grp1txfix3.getText()+":"+grp1tx3.getText();//Z
+                System.out.println(txt);
+                canvas.drawText(txt,(int)x,(int)y,paint);//dessine x
+                y=l*0.94;
+                canvas.drawText(txt2,(int)x,(int)y,paint);//dessine y
+                y=l*0.98;
+                canvas.drawText(txt3,(int)x,(int)y,paint);//dessine z
+                x=h*0.65;
+                y =l*0.90;
+                //position (geolocalisation)
+                txt = grp2txfix1.getText()+":"+grp2tx1.getText();//latitude
+                txt2 =grp2txfix2.getText()+":"+grp2tx2.getText();//longitude
+                txt3 =grp2txfix3.getText()+":"+grp2tx3.getText();//altitude
+                canvas.drawText(txt,(int)x,(int)y,paint);
+                y=l*0.94;
+                canvas.drawText(txt2,(int)x,(int)y,paint);
+                y=l*0.98;
+                canvas.drawText(txt3,(int)x,(int)y,paint);
+                break;
+            case 1:
+                //x,y et z (gyroscope)
+                txt = "rot"+grp1txfix1.getText()+":"+grp1tx1.getText();
+                txt2 ="rot"+grp1txfix2.getText()+":"+grp1tx2.getText();
+                txt3 ="rot"+grp1txfix3.getText()+":"+grp1tx3.getText();
+                System.out.println(txt);
+                canvas.drawText(txt,(int)x,(int)y,paint);
+                y=l*0.94;
+                canvas.drawText(txt2,(int)x,(int)y,paint);
+                y=l*0.98;
+                canvas.drawText(txt3,(int)x,(int)y,paint);
+                x=h*0.65;
+                y =l*0.90;
+                break;
+            case 2:
+                //position (geolocalisation)
+                txt = grp2txfix1.getText()+":"+grp2tx1.getText();
+                txt2 =grp2txfix2.getText()+":"+grp2tx2.getText();
+                txt3 =grp2txfix3.getText()+":"+grp2tx3.getText();
+                canvas.drawText(txt,(int)x,(int)y,paint);
+                y=l*0.94;
+                canvas.drawText(txt2,(int)x,(int)y,paint);
+                y=l*0.98;
+                canvas.drawText(txt3,(int)x,(int)y,paint);
+                break;
+            case 3:
+                //rien à mettre
+                break;
+            default:
+                break;
+        }
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         drawableBitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
         return outputStream.toByteArray();
