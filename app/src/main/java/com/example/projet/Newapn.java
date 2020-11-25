@@ -30,6 +30,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.Image;
 import android.media.ImageReader;
+import android.media.MediaPlayer;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -125,7 +126,7 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
     private boolean mFlashSupported;
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
-
+    private MediaPlayer song;
     CameraDevice.StateCallback stateCallback = new CameraDevice.StateCallback() {
         @Override
         public void onOpened(@NonNull CameraDevice camera) {
@@ -151,6 +152,7 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
         super.onCreate(savedInstanceState);
         setContentView(R.layout.apnview);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        song=MediaPlayer.create(this, R.raw.song);
 
 
 
@@ -184,6 +186,7 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
             @Override
             public void onClick(View view) {
                 takePicture();
+                song.start();
             }
         });
     }
