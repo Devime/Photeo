@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -43,11 +44,18 @@ public class Gallery extends AppCompatActivity {
     }
 
     private void showimages() {
-        String path = "/storage/sdcard0/DCIM/Camera";
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/";
         System.out.println("****************************************************************************"+path);
 
         allfillespath = new ArrayList<>();
         allfillespath = listAllFiles(path);
+        File directory = new File(path);
+        File[] files = directory.listFiles();
+        Log.d("Files", "Size: "+ files.length);
+        for (int i = 0; i < files.length; i++)
+        {
+            Log.d("Files", "FileName:" + files[i].getName());
+        }
         System.out.println(allfillespath.size()+"+++++++++++++++++++++++++++++++++++++++++++");
 
         RecyclerView recyclerView = findViewById(R.id.gallerie);
