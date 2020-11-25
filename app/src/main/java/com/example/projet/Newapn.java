@@ -22,6 +22,9 @@ import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.Image;
 import android.media.ImageReader;
 import android.os.Environment;
@@ -58,7 +61,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class Newapn extends AppCompatActivity implements GestureDetector.OnGestureListener,GestureDetector.OnDoubleTapListener {
+public class Newapn extends AppCompatActivity implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
 
     private Button btnCapture;
     private TextureView textureView;
@@ -67,7 +70,7 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
     private static final int SWIPE_MIN_DISTANCE = 100;
     private static final int SWIPE_THRESHOLD_VELOCITY = 90;
     //gesture grp view
-    private float x1,x2,y1,y2;
+    private float x1, x2, y1, y2;
     private ImageView grp1img;
     private TextView grp1txfix1;
     private TextView grp1txfix2;
@@ -81,7 +84,7 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
     private TextView grp2tx1;
     private TextView grp2tx2;
     private TextView grp2tx3;
-    private int state =0;
+    private int state = 0;
     private GestureDetector gestureDetector;
 
     //gyro
@@ -91,11 +94,12 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
 
     //Check state orientation of output image
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
-    static{
-        ORIENTATIONS.append(Surface.ROTATION_0,90);
-        ORIENTATIONS.append(Surface.ROTATION_90,0);
-        ORIENTATIONS.append(Surface.ROTATION_180,270);
-        ORIENTATIONS.append(Surface.ROTATION_270,180);
+
+    static {
+        ORIENTATIONS.append(Surface.ROTATION_0, 90);
+        ORIENTATIONS.append(Surface.ROTATION_90, 0);
+        ORIENTATIONS.append(Surface.ROTATION_180, 270);
+        ORIENTATIONS.append(Surface.ROTATION_270, 180);
     }
 
     private String cameraId;
@@ -104,6 +108,8 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
     private CaptureRequest.Builder captureRequestBuilder;
     private Size imageDimension;
     private ImageReader imageReader;
+
+    //geopositionnement
 
 
 
@@ -129,7 +135,7 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
         @Override
         public void onError(@NonNull CameraDevice cameraDevice, int i) {
             cameraDevice.close();
-            cameraDevice=null;
+            cameraDevice = null;
         }
     };
 
@@ -141,7 +147,7 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 
-        gogyro();
+
 
         grp1img = findViewById(R.id.angle);
         grp1txfix1 = findViewById(R.id.X);
@@ -157,19 +163,64 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
         grp2tx1 = findViewById(R.id.latitudet);
         grp2tx2 = findViewById(R.id.longitudet);
         grp2tx3 = findViewById(R.id.altitudet);
-        this.gestureDetector = new GestureDetector(this,this);
+        this.gestureDetector = new GestureDetector(this, this);
 
-        textureView = (TextureView)findViewById(R.id.apnarea);
+        gogyro();
+        gogeo();
+
+        textureView = (TextureView) findViewById(R.id.apnarea);
 
         assert textureView != null;
         textureView.setSurfaceTextureListener(textureListener);
-        btnCapture = (Button)findViewById(R.id.btakepic);
+        btnCapture = (Button) findViewById(R.id.btakepic);
         btnCapture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 takePicture();
             }
         });
+    }
+
+    private void gogeo() {
+
+        String locationContext = Context.LOCATION_SERVICE;
+        LocationManager locationManager =
+                (LocationManager) getSystemService(locationContext);
+        String provider = LocationManager.GPS_PROVIDER;
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},101);
+            return;
+        }
+        Location location = locationManager.getLastKnownLocation(provider);
+        if (location != null) {
+            System.out.println("-------------------------------------------<----------------------------------<-------------------->"+location.getAltitude());
+            String latitude =""+location.getLatitude();
+            String longitude =""+location.getLongitude();
+            String altitude =""+location.getAltitude();
+            grp2tx1.setText(latitude);
+            grp2tx2.setText(longitude);
+            grp2tx3.setText(altitude);
+        }
+
+
+        /*LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationListener locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(@NonNull Location location) {
+                System.out.println("*********************************************************************");
+                grp2tx1.setText((int) location.getLatitude());
+                grp2tx2.setText((int) location.getLongitude());
+                grp2tx3.setText((int) location.getAltitude());
+            }
+        };
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},101);
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);*/
+
     }
 
     private void gogyro() {
