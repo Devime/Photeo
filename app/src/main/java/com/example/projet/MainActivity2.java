@@ -32,6 +32,9 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Intent intent = new Intent(this,todo.class);
+                Intent intent = new Intent(MainActivity2.this, Gallery.class);
+                startActivity(intent);
+                ActivityCompat.finishAffinity(MainActivity2.this);
             }
         };
 

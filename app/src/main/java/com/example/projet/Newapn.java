@@ -2,6 +2,7 @@ package com.example.projet;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -48,6 +49,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -189,6 +191,16 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
                 song.start();
             }
         });
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(Newapn.this, MainActivity2.class);
+        startActivity(intent);
+        ActivityCompat.finishAffinity(Newapn.this);
     }
 
     private void gogeo() {
@@ -271,7 +283,7 @@ public class Newapn extends AppCompatActivity implements GestureDetector.OnGestu
             int rotation = getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
             String ts = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            final File file = new File(Environment.getExternalStorageDirectory()+"/"+ts+".jpg");
+            final File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+ts+".jpg");
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
