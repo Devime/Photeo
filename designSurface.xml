@@ -1,0 +1,12 @@
+<application>
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/blain/AndroidStudioProjects/DevMobileTPben/Exo1/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/blain/AndroidStudioProjects/ShakeEat/app/src/main/res/layout/activity_maps.xml" value="0.18206521739130435" />
+        <entry key="..\:/Users/blain/AndroidStudioProjects/ShakeEat/app/src/main/res/layout/activity_splashscreen.xml" value="0.1" />
+        <entry key="..\:/Users/blain/AndroidStudioProjects/ShakeEat/app/src/main/res/layout/activity_teste.xml" value="0.18206521739130435" />
+      </map>
+    </option>
+  </component>
+</application>
