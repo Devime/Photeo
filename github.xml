@@ -1,6 +1,6 @@
 <application>
   <component name="GithubAccounts">
-    <account id="7b1d2f75-9434-4d8a-92de-d3abd912bff6" name="devime">
+    <account id="7b1d2f75-9434-4d8a-92de-d3abd912bff6" name="Devime">
       <server host="github.com" />
     </account>
   </component>
